@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+
+  app:
+    build:
+      dockerfile: docker/app/Dockerfile
+      context: .
+    volumes:
+      - ./src:/usr/src/app:delegated
+    ports:
+      - "6794:8000"
+    entrypoint:
+      - yarn
+      - serve
+
+  cli:
+    build:
+      dockerfile: docker/app/Dockerfile
+      context: .
+    volumes:
+      - ./src:/usr/src/app:delegated
+    entrypoint:
+      - sh
+      - -c
+      - sleep 1000000
