@@ -24,8 +24,9 @@ setup:##@setup Create dev environment
 	$(CLI) yarn install
 
 
-# .PHONY: serve
-# serve: ##@dev start api mock server
+.PHONY: serve
+serve: ##@dev start api mock server
+	docker-compose exec cli sh -c "yarn con";
 # 	docker build -t json-server docker/json-server
 # 	docker run -it --rm -v "$(PWD)/data:/data" -w /data -u "$(UID):$(GID)" -p 9988:9988 json-server --watch db.json -p 9988 --host 0.0.0.0
 

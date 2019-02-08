@@ -8,10 +8,6 @@ consumer driven contract testing - example - frontend
 
 2.
 (same cli)
-`make cli`
-
-3.
-(same cli, now in container)
-`yarn con`
+`make serve`
 
 visit shown address, e.g. `http://localhost:6794/`
