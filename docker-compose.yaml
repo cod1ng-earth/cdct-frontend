@@ -2,17 +2,19 @@ version: "3.7"
 
 services:
 
-  app:
-    build:
-      dockerfile: docker/app/Dockerfile
-      context: .
-    volumes:
-      - ./src:/usr/src/app:delegated
-    ports:
-      - "6794:8000"
-    entrypoint:
-      - yarn
-      - serve
+  # app:
+  #   build:
+  #     dockerfile: docker/app/Dockerfile
+  #     context: .
+  #   volumes:
+  #     - ./src:/usr/src/app:delegated
+  #   ports:
+  #     - "6794:6794"
+  #   environment:
+  #     PORT: "6794"
+  #   entrypoint:
+  #     - yarn
+  #     - serve
 
   cli:
     build:
@@ -20,6 +22,10 @@ services:
       context: .
     volumes:
       - ./src:/usr/src/app:delegated
+    ports:
+      - "6794:6794"
+    environment:
+      PORT: "6794"
     entrypoint:
       - sh
       - -c
