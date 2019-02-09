@@ -25,10 +25,8 @@ setup:##@setup Create dev environment
 
 
 .PHONY: serve
-serve: ##@dev start api mock server
+serve: ##@dev start and listen to vue dev server, quit will stop it
 	docker-compose exec cli sh -c "yarn con";
-# 	docker build -t json-server docker/json-server
-# 	docker run -it --rm -v "$(PWD)/data:/data" -w /data -u "$(UID):$(GID)" -p 9988:9988 json-server --watch db.json -p 9988 --host 0.0.0.0
 
 
 .PHONY: cli
@@ -37,6 +35,12 @@ cli: ##@dev start cli container
 		docker-compose up -d cli; \
 	fi;
 	docker-compose exec cli sh;
+
+
+.PHONY: mock
+mock: ##@dev start the mock server
+	docker-compose up -d mock_api;
+	docker-compose up -d mock_api_proxy;
 
 
 #.PHONY: open

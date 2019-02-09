@@ -1,0 +1,72 @@
+map $http_origin $cors_origin_header {
+    default "";
+    ${CORS_ALLOW_DOMAINS_REGEX} "$http_origin";
+}
+
+map $http_origin $cors_cred {
+    default "";
+    ${CORS_ALLOW_DOMAINS_REGEX} "true";
+}
+
+upstream target_service {
+  server ${TARGET_SERVICE};
+}
+
+server {
+  # included from 'nginx/templates/vhost/snippets/listen.erb'
+  listen ${HTTP_PORT};
+  # server_name ${FQDN};
+  server_name _;
+
+
+  # special options
+  # included from 'nginx/templates/vhost/snippets/options_begin.erb'
+  location / {
+    #proxy_pass              ${PROX_PASS};
+    proxy_pass              http://target_service;
+    proxy_redirect          off;
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_connect_timeout   150;
+    proxy_send_timeout      100;
+    proxy_read_timeout      100;
+    client_max_body_size    200m;
+    client_body_buffer_size 128k;
+
+    add_header Access-Control-Allow-Origin $cors_origin_header always;
+    add_header Access-Control-Allow-Credentials $cors_cred;
+    add_header "Access-Control-Allow-Methods" "GET, POST, OPTIONS, HEAD";
+    add_header "Access-Control-Allow-Headers" "Authorization, Origin, X-Requested-With, Content-Type, Accept";
+
+    if ($request_method = 'OPTIONS' ) {
+      return 204 no-content;
+    }
+  }
+
+  # configure rewriting
+
+  # include common configuration
+  # included from 'nginx/templates/vhost/snippets/common.erb'
+  autoindex   off;
+  #index       index.php index.html;
+  #access_log  /var/log/nginx/local.de.access.log;
+  #include     error_page;
+
+  # prevent access to hidden files
+  location ~ ^(?!/api).*/\. {
+    access_log off;
+    log_not_found off;
+    deny all;
+  }
+
+  location ~ ^/favicon.ico {
+    access_log off;
+    log_not_found off;
+  }
+
+  # configure tagging
+  #include  etag;
+
+  # special options
+}

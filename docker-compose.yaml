@@ -30,3 +30,34 @@ services:
       - sh
       - -c
       - sleep 1000000
+
+  mock_api:
+    build:
+      dockerfile: docker/app/Dockerfile
+      context: .
+    volumes:
+      - ./src:/usr/src/app:delegated
+    # ports:
+    #   - "4976:4976"
+    expose:
+        - "3000"
+    ports:
+      - "3000:3000"
+    # environment:
+    #   PORT: "3000"
+    entrypoint:
+      - node
+      - ./mock_api/index.js
+  mock_api_proxy:
+    build:
+      dockerfile: ./Dockerfile
+      context: docker/mock_api/nginx/
+    # volumes:
+      # - ./src:/usr/src/app:delegated
+    ports:
+      - "4976:80"
+    environment:
+      # FQDN: "localhost"
+      HTTP_PORT: "80"
+      TARGET_SERVICE: "mock_api:3000"
+      CORS_ALLOW_DOMAINS_REGEX: '"http://localhost:6794"'
