@@ -30,6 +30,12 @@ services:
       - "6794"
     environment:
       PORT: "6794"
+      # _mock_
+      # MOCK_ENABLED: "false"
+      # MOCK_BACKEND_ENDPOINT: "http://mock_api:4976"
+      VUE_APP_BACKEND_ENDPOINT: "http://localhost:4976"
+      # _normal_
+      # VUE_APP_BACKEND_ENDPOINT: "localhost:6793"
     entrypoint:
       - sh
       - -c
@@ -65,6 +71,7 @@ services:
       # FQDN: "localhost"
       HTTP_PORT: "80"
       TARGET_SERVICE: "mock_api:3000"
+      #cli:6794
       CORS_ALLOW_DOMAINS_REGEX: '"http://localhost:6794"'
 
 
