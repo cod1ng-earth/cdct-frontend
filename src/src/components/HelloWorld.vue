@@ -35,7 +35,29 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
-  }
+  },
+  data: function() {
+    return{
+        campaigns: []
+    }
+  },
+
+  ready: function () {
+    // this.fetchCampaigns();
+  },
+
+  methods: {
+    // fetchCampaigns: function () {
+    //   var campaigns = [];
+    //   this.$http.get('/retention/getCampaigns')
+    //     .success(function (campaigns) {
+    //       this.$set('campaigns', campaigns);
+    //     })
+    //     .error(function (err) {
+    //       campaigns.log(err);
+    //     });
+    // },
+  },
 }
 </script>
 

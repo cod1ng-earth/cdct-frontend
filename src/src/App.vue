@@ -8,6 +8,18 @@
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 
+const endpoint = process.env.VUE_APP_BACKEND_ENDPOINT;
+console.log("endpoint:",endpoint);
+
+const asFn = async function() {
+    const fetchRes = await fetch(`${endpoint}/products`);
+    const fetchJson = await fetchRes.json();
+
+    console.log("fetchJson", fetchJson);
+}
+
+asFn();
+
 export default {
   name: 'app',
   components: {
