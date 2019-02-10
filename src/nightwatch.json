@@ -1,0 +1,23 @@
+{
+    "src_folders" : ["testing/browser/tests"],
+    "output_folder": "testing/browser/output",
+    "test_settings" : {
+        "default" : {
+            "launch_url": "https://google.com",
+            "selenium_host"  : "selenium",
+            "desiredCapabilities": {
+                "browserName": "chrome"
+            },
+            "screenshots" : {
+                "enabled" : true,
+                "on_failure" : true,
+                "path" : "testing/browser/media"
+            }
+        },
+        "chrome" : {
+            "desiredCapabilities": {
+                "browserName": "chrome"
+            }
+        }
+    }
+}
