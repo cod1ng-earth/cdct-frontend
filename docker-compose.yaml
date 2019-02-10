@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
 
+
   # app:
   #   build:
   #     dockerfile: docker/app/Dockerfile
@@ -16,6 +17,7 @@ services:
   #     - yarn
   #     - serve
 
+
   cli:
     build:
       dockerfile: docker/app/Dockerfile
@@ -24,12 +26,15 @@ services:
       - ./src:/usr/src/app:delegated
     ports:
       - "6794:6794"
+    expose:
+      - "6794"
     environment:
       PORT: "6794"
     entrypoint:
       - sh
       - -c
       - sleep 1000000
+
 
   mock_api:
     build:
@@ -61,3 +66,29 @@ services:
       HTTP_PORT: "80"
       TARGET_SERVICE: "mock_api:3000"
       CORS_ALLOW_DOMAINS_REGEX: '"http://localhost:6794"'
+
+
+  selenium:
+    image: selenium/hub:3.14.0
+    environment:
+      - GRID_MAX_SESSION=2
+      - GRID_BROWSER_TIMEOUT=100000
+      - GRID_TIMEOUT=90000
+      - GRID_NEW_SESSION_WAIT_TIMEOUT=300000
+    # ports:
+    #   - "4444:4444"
+    expose:
+      - "4444"
+  chrome:
+    image: selenium/node-chrome:3.14.0
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium
+      - HUB_PORT_4444_TCP_PORT=4444
+      - DBUS_SESSION_BUS_ADDRESS=/dev/null
+      - NODE_MAX_INSTANCES=1
+      - NODE_MAX_SESSION=1
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium
+

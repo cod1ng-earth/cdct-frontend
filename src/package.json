@@ -6,9 +6,11 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "con": "yarn serve --port ${PORT}"
+    "con": "yarn serve --port ${PORT}",
+    "test:browser": "nightwatch -e chrome"
   },
   "dependencies": {
+    "nightwatch": "1.0.19",
     "vue": "^2.5.22"
   },
   "devDependencies": {
